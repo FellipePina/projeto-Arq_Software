@@ -7,7 +7,32 @@ use App\Models\Usuario;
 /**
  * Classe UsuarioController - Controlador para operações de usuário
  *
- * Princípios aplicados:
+ * PADRÃO GOF: FACADE (ESTRUTURAL)
+ *
+ * Este controller atua como uma FACHADA (Facade) que simplifica e unifica
+ * a interface para o complexo subsistema de autenticação de usuários.
+ *
+ * Complexidades escondidas pela Facade:
+ * - Validação de dados (CSRF, campos obrigatórios, formato de email)
+ * - Consulta ao modelo Usuario
+ * - Verificação de senhas com hash
+ * - Gerenciamento de sessões PHP ($_SESSION)
+ * - Regeneração de IDs de sessão
+ * - Controle de tokens CSRF
+ * - Mensagens flash
+ * - Redirecionamentos
+ *
+ * Benefícios do padrão Facade:
+ * - Interface simplificada: O roteador chama apenas processarLogin()
+ * - Subsistema desacoplado: As rotas não precisam conhecer a complexidade
+ * - Manutenibilidade: Mudanças internas não afetam quem usa a fachada
+ * - Organização: Toda lógica de autenticação centralizada
+ *
+ * Exemplo de uso (no roteador):
+ *   $controller = new UsuarioController();
+ *   $controller->login(); // Interface simples, complexidade escondida
+ *
+ * Princípios SOLID aplicados:
  * - Single Responsibility: apenas operações de usuário
  * - Dependency Inversion: depende de abstrações (modelos)
  * - Open/Closed: aberto para extensão, fechado para modificação
@@ -27,6 +52,9 @@ class UsuarioController extends BaseController
 
   /**
    * Exibe o formulário de login
+   *
+   * MÉTODO FACADE: Interface simplificada para autenticação
+   * Este método esconde toda a complexidade do processo de login
    */
   public function login(): void
   {
@@ -49,8 +77,20 @@ class UsuarioController extends BaseController
 
     $this->render('usuario/login', $data);
   }
+
   /**
    * Processa o login do usuário
+   *
+   * SUBSISTEMA COMPLEXO escondido pela Facade:
+   * Este método coordena múltiplas operações complexas:
+   * 1. Validação de token CSRF
+   * 2. Validação de campos obrigatórios
+   * 3. Consulta ao banco de dados
+   * 4. Verificação de senha com hash
+   * 5. Criação de sessão segura
+   * 6. Regeneração de tokens
+   * 7. Mensagens de feedback
+   * 8. Redirecionamentos apropriados
    */
   private function processarLogin(): void
   {

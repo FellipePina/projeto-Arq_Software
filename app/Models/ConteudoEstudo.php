@@ -2,14 +2,38 @@
 
 namespace App\Models;
 
+use App\Interfaces\SubjectInterface;
+use App\Interfaces\ObserverInterface;
+
 /**
  * Classe ConteudoEstudo - Modelo para gerenciar conteúdos de estudo
+ *
+ * PADRÃO GOF: OBSERVER (COMPORTAMENTAL) - SUBJECT
+ *
+ * Esta classe atua como SUJEITO (Subject) no padrão Observer.
+ * Quando o status de um conteúdo muda para 'CONCLUÍDO', ela notifica
+ * todos os observadores registrados (geralmente Metas).
+ *
+ * Funcionamento:
+ * 1. Metas se registram como observadoras deste conteúdo
+ * 2. Quando alterarStatus() muda o status para CONCLUÍDO
+ * 3. O método notify() é chamado automaticamente
+ * 4. Todas as Metas observadoras são notificadas
+ * 5. Cada Meta recalcula seu progresso
+ *
+ * Benefícios do Observer:
+ * - Desacoplamento: ConteudoEstudo não precisa conhecer Meta diretamente
+ * - Flexibilidade: Múltiplas Metas podem observar o mesmo conteúdo
+ * - Extensibilidade: Outros observadores podem ser adicionados facilmente
+ *
+ * Analogia: Canal do YouTube notificando inscritos sobre novo vídeo
  *
  * Princípios aplicados:
  * - Single Responsibility: apenas operações de conteúdo de estudo
  * - Composition: usa Categoria para operações relacionadas
+ * - Open/Closed: aberto para novos observadores sem modificação
  */
-class ConteudoEstudo extends BaseModel
+class ConteudoEstudo extends BaseModel implements SubjectInterface
 {
   protected string $table = 'conteudos_estudo';
 
@@ -17,6 +41,12 @@ class ConteudoEstudo extends BaseModel
   public const STATUS_PENDENTE = 'pendente';
   public const STATUS_EM_ANDAMENTO = 'em_andamento';
   public const STATUS_CONCLUIDO = 'concluido';
+
+  /**
+   * Lista de observadores registrados (padrão Observer)
+   * @var ObserverInterface[]
+   */
+  private array $observers = [];
 
   /**
    * Busca conteúdos de um usuário específico
@@ -90,6 +120,9 @@ class ConteudoEstudo extends BaseModel
   /**
    * Altera o status de um conteúdo
    *
+   * PADRÃO OBSERVER EM AÇÃO:
+   * Quando o status muda para CONCLUÍDO, notifica todos os observadores
+   *
    * @param int $id ID do conteúdo
    * @param string $novoStatus Novo status
    * @return bool True se alterado com sucesso
@@ -107,6 +140,10 @@ class ConteudoEstudo extends BaseModel
       return false;
     }
 
+    // Busca o status anterior
+    $conteudoAtual = $this->findById($id);
+    $statusAnterior = $conteudoAtual['status'] ?? null;
+
     $sql = "UPDATE {$this->table}
                 SET status = :status, data_atualizacao = :data_atualizacao
                 WHERE id = :id";
@@ -115,7 +152,23 @@ class ConteudoEstudo extends BaseModel
     $stmt->bindValue(':data_atualizacao', date('Y-m-d H:i:s'));
     $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
 
-    return $stmt->execute();
+    $resultado = $stmt->execute();
+
+    // PADRÃO OBSERVER: Notifica observadores quando status muda para CONCLUÍDO
+    if ($resultado && $novoStatus === self::STATUS_CONCLUIDO && $statusAnterior !== self::STATUS_CONCLUIDO) {
+      // Carrega os observadores (Metas que incluem este conteúdo)
+      $this->carregarObservadores($id);
+
+      // Notifica todos os observadores sobre a conclusão
+      $this->notify([
+        'conteudo_id' => $id,
+        'novo_status' => $novoStatus,
+        'status_anterior' => $statusAnterior,
+        'evento' => 'conteudo_concluido'
+      ]);
+    }
+
+    return $resultado;
   }
 
   /**
@@ -206,5 +259,89 @@ class ConteudoEstudo extends BaseModel
 
     $result = $stmt->fetch();
     return (int) $result['total'];
+  }
+
+  // ========================================================================
+  // IMPLEMENTAÇÃO DO PADRÃO OBSERVER - MÉTODOS DE SUBJECT
+  // ========================================================================
+
+  /**
+   * Adiciona um observador à lista (padrão Observer)
+   *
+   * Permite que objetos (como Meta) se registrem para serem
+   * notificados quando este conteúdo mudar de status.
+   *
+   * @param ObserverInterface $observer Observador a ser registrado
+   * @return void
+   */
+  public function attach(ObserverInterface $observer): void
+  {
+    // Evita adicionar o mesmo observador múltiplas vezes
+    if (!in_array($observer, $this->observers, true)) {
+      $this->observers[] = $observer;
+    }
+  }
+
+  /**
+   * Remove um observador da lista (padrão Observer)
+   *
+   * @param ObserverInterface $observer Observador a ser removido
+   * @return void
+   */
+  public function detach(ObserverInterface $observer): void
+  {
+    $key = array_search($observer, $this->observers, true);
+    if ($key !== false) {
+      unset($this->observers[$key]);
+    }
+  }
+
+  /**
+   * Notifica todos os observadores sobre uma mudança (padrão Observer)
+   *
+   * Este método é chamado quando o status do conteúdo muda.
+   * Ele informa a todos os observadores registrados (Metas) sobre a mudança.
+   *
+   * @param mixed $data Dados sobre a mudança (ex: novo status)
+   * @return void
+   */
+  public function notify($data = null): void
+  {
+    foreach ($this->observers as $observer) {
+      $observer->update($this, $data);
+    }
+  }
+
+  /**
+   * Carrega os observadores deste conteúdo
+   *
+   * Este método busca todas as Metas que incluem este conteúdo
+   * e as registra como observadoras através do MetaObserver.
+   *
+   * @param int $conteudoId ID do conteúdo
+   * @return void
+   */
+  public function carregarObservadores(int $conteudoId): void
+  {
+    // Busca todas as metas ativas que incluem este conteúdo
+    // e ainda não marcaram este conteúdo como concluído
+    $sql = "SELECT DISTINCT m.id
+                FROM metas m
+                INNER JOIN metas_conteudos mc ON m.id = mc.meta_id
+                WHERE mc.conteudo_id = :conteudo_id
+                AND m.status = 'ativa'
+                AND mc.concluido = 0";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':conteudo_id', $conteudoId, \PDO::PARAM_INT);
+    $stmt->execute();
+
+    $metasIds = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+    // Registra cada Meta como observadora usando MetaObserver
+    foreach ($metasIds as $metaId) {
+      $observer = new MetaObserver((int) $metaId);
+      $this->attach($observer);
+    }
   }
 }

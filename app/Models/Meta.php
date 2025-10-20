@@ -4,6 +4,30 @@ namespace App\Models;
 
 /**
  * Classe Meta - Modelo para gerenciar metas de estudo
+ * 
+ * PADRÃO GOF: OBSERVER (COMPORTAMENTAL) - OBSERVER
+ * 
+ * Esta classe participa do padrão Observer através da classe MetaObserver.
+ * Ela observa mudanças no status dos ConteudosEstudo e reage automaticamente
+ * recalculando seu progresso quando um conteúdo é concluído.
+ * 
+ * Funcionamento:
+ * 1. MetaObserver se registra como observador dos ConteudosEstudo
+ * 2. Quando um ConteudoEstudo muda para CONCLUÍDO
+ * 3. O ConteudoEstudo notifica todos os MetaObserver registrados
+ * 4. O MetaObserver chama marcarConteudoConcluido() desta classe
+ * 5. A Meta recalcula seu progresso automaticamente
+ * 
+ * Benefícios do Observer:
+ * - Atualização automática: Meta não precisa verificar mudanças manualmente
+ * - Desacoplamento: Meta não precisa conhecer detalhes do ConteudoEstudo
+ * - Reatividade: Mudanças são propagadas instantaneamente
+ * 
+ * Analogia: Como um inscrito do YouTube que recebe notificações
+ * 
+ * Nota: Usamos MetaObserver como adaptador para evitar conflito entre:
+ * - ObserverInterface::update() (padrão Observer)
+ * - BaseModel::update() (operação de banco de dados)
  *
  * Princípios aplicados:
  * - Single Responsibility: apenas operações de metas
@@ -16,9 +40,7 @@ class Meta extends BaseModel
   // Status possíveis para metas
   public const STATUS_ATIVA = 'ativa';
   public const STATUS_CONCLUIDA = 'concluida';
-  public const STATUS_CANCELADA = 'cancelada';
-
-  /**
+  public const STATUS_CANCELADA = 'cancelada';  /**
    * Cria uma nova meta
    *
    * @param array $dados Dados da meta
@@ -258,4 +280,5 @@ class Meta extends BaseModel
 
     return $resultado;
   }
+
 }
