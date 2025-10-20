@@ -13,17 +13,21 @@ Este documento descreve os três padrões de projeto GOF (Gang of Four) implemen
 ## 1. Singleton (Criacional)
 
 ### 📍 Localização
+
 **Arquivo:** `app/Models/Database.php`
 
 ### 🎯 Objetivo
+
 Garantir que exista apenas uma única instância de conexão com o banco de dados em toda a aplicação, evitando desperdício de recursos e garantindo consistência.
 
 ### 💡 Justificativa
+
 O sistema precisa de um ponto de acesso único e controlado à conexão com o banco de dados. Conforme o material de aula, este padrão é ideal para o gerenciamento de "conexão com banco de dados", garantindo eficiência e consistência.
 
 ### 🔧 Implementação
 
 #### Características do Singleton implementadas:
+
 - **Construtor privado:** Impede a criação de instâncias fora da classe
 - **Método `__clone()` privado:** Impede a clonagem da instância
 - **Método `__wakeup()` público:** Impede a desserialização
@@ -85,6 +89,7 @@ $db2 = Database::getInstance();
 ```
 
 ### 🎁 Benefícios
+
 - ✅ Economia de recursos (uma única conexão compartilhada)
 - ✅ Controle centralizado de acesso ao banco
 - ✅ Consistência em toda a aplicação
@@ -95,13 +100,17 @@ $db2 = Database::getInstance();
 ## 2. Facade (Estrutural)
 
 ### 📍 Localização
+
 **Arquivo:** `app/Controllers/UsuarioController.php`
 
 ### 🎯 Objetivo
+
 Fornecer uma interface simplificada para o complexo subsistema de autenticação de usuários, escondendo a complexidade interna.
 
 ### 💡 Justificativa
+
 O processo de login é complexo, envolvendo múltiplas etapas:
+
 - Recepção e validação de dados
 - Validação de token CSRF
 - Consulta ao `UsuarioModel`
@@ -184,6 +193,7 @@ $controller->login();
 ```
 
 ### 🎁 Benefícios
+
 - ✅ **Interface simplificada:** Fácil de usar pelo roteador
 - ✅ **Subsistema desacoplado:** Rotas não conhecem a complexidade
 - ✅ **Manutenibilidade:** Mudanças internas não afetam quem usa
@@ -195,7 +205,9 @@ $controller->login();
 ## 3. Observer (Comportamental)
 
 ### 📍 Localização
+
 **Arquivos:**
+
 - `app/Interfaces/SubjectInterface.php` - Interface do Sujeito
 - `app/Interfaces/ObserverInterface.php` - Interface do Observador
 - `app/Models/ConteudoEstudo.php` - Sujeito (Subject)
@@ -203,9 +215,11 @@ $controller->login();
 - `app/Models/MetaObserver.php` - Observador (Observer)
 
 ### 🎯 Objetivo
+
 Permitir que objetos `Meta` sejam notificados automaticamente quando o status de um `ConteudoEstudo` muda para 'CONCLUÍDO', sem que haja acoplamento direto entre as classes.
 
 ### 💡 Justificativa
+
 Quando o status de um `ConteudoEstudo` muda para 'CONCLUÍDO', as `Metas` que incluem esse conteúdo precisam recalcular seu progresso. O padrão Observer permite que o `ConteudoEstudo` notifique as `Metas` sem conhecê-las diretamente, criando um sistema desacoplado e flexível.
 
 **Analogia:** Como um canal do YouTube notificando todos os inscritos sobre um novo vídeo.
@@ -352,6 +366,7 @@ $conteudoModel->alterarStatus($conteudoId, ConteudoEstudo::STATUS_CONCLUIDO);
 ```
 
 ### 🎁 Benefícios
+
 - ✅ **Desacoplamento:** ConteudoEstudo não conhece Meta diretamente
 - ✅ **Flexibilidade:** Múltiplas Metas podem observar o mesmo conteúdo
 - ✅ **Extensibilidade:** Novos observadores podem ser adicionados facilmente
@@ -362,6 +377,7 @@ $conteudoModel->alterarStatus($conteudoId, ConteudoEstudo::STATUS_CONCLUIDO);
 ### 🔍 Por que MetaObserver?
 
 Usamos a classe `MetaObserver` como **adaptador** para resolver um conflito:
+
 - `ObserverInterface::update()` - método do padrão Observer
 - `BaseModel::update()` - método para atualizar dados no banco
 
@@ -371,11 +387,11 @@ Sem o adaptador, haveria conflito de nomes na classe `Meta`.
 
 ## 📚 Resumo
 
-| Padrão | Tipo | Classe | Benefício Principal |
-|--------|------|--------|---------------------|
-| **Singleton** | Criacional | `Database` | Uma única conexão com BD |
-| **Facade** | Estrutural | `UsuarioController` | Interface simples para autenticação |
-| **Observer** | Comportamental | `ConteudoEstudo`, `MetaObserver` | Notificação automática de mudanças |
+| Padrão        | Tipo           | Classe                           | Benefício Principal                 |
+| ------------- | -------------- | -------------------------------- | ----------------------------------- |
+| **Singleton** | Criacional     | `Database`                       | Uma única conexão com BD            |
+| **Facade**    | Estrutural     | `UsuarioController`              | Interface simples para autenticação |
+| **Observer**  | Comportamental | `ConteudoEstudo`, `MetaObserver` | Notificação automática de mudanças  |
 
 ---
 
@@ -390,18 +406,21 @@ Sem o adaptador, haveria conflito de nomes na classe `Meta`.
 ## 📝 Notas de Implementação
 
 ### Singleton
+
 - ✅ Construtor privado implementado
 - ✅ Clone e desserialização bloqueados
 - ✅ Lazy Loading na conexão
 - ✅ Compatibilidade com código legado mantida
 
 ### Facade
+
 - ✅ Complexidade escondida nos métodos privados
 - ✅ Interface pública simples e intuitiva
 - ✅ Coordenação de múltiplos subsistemas
 - ✅ Mensagens e redirecionamentos centralizados
 
 ### Observer
+
 - ✅ Interfaces claras e bem documentadas
 - ✅ Desacoplamento total entre Subject e Observer
 - ✅ Adaptador para resolver conflito de nomes
