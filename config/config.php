@@ -10,6 +10,8 @@
 
 // Configurações do banco de dados
 define('DB_HOST', 'localhost');
+// Porta do banco de dados (altere para 3307 se mudar no XAMPP)
+define('DB_PORT', 3306);
 define('DB_NAME', 'auxilio_estudos');
 define('DB_USER', 'root');
 define('DB_PASS', '');

@@ -101,9 +101,11 @@ class Database
 
     try {
       // Constrói a DSN (Data Source Name)
+      // Inclui a porta no DSN para suportar MySQL em porta diferente (ex.: 3307)
       $dsn = sprintf(
-        'mysql:host=%s;dbname=%s;charset=%s',
+        'mysql:host=%s;port=%d;dbname=%s;charset=%s',
         DB_HOST,
+        defined('DB_PORT') ? (int) DB_PORT : 3306,
         DB_NAME,
         DB_CHARSET
       );
