@@ -9,9 +9,11 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 ## 🎯 Padrões Implementados
 
 ### 1️⃣ Singleton (Criacional)
+
 **Arquivo:** `app/Models/Database.php`
 
 ✅ **Características Implementadas:**
+
 - Construtor privado (`private function __construct()`)
 - Método `getInstance()` estático
 - Prevenção de clonagem (`private function __clone()`)
@@ -24,9 +26,11 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 ---
 
 ### 2️⃣ Facade (Estrutural)
+
 **Arquivo:** `app/Controllers/UsuarioController.php`
 
 ✅ **Complexidades Escondidas:**
+
 - Validação de token CSRF
 - Validação de campos obrigatórios
 - Consulta ao modelo Usuario
@@ -41,7 +45,9 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 ---
 
 ### 3️⃣ Observer (Comportamental)
+
 **Arquivos:**
+
 - `app/Interfaces/SubjectInterface.php` - Interface do Sujeito
 - `app/Interfaces/ObserverInterface.php` - Interface do Observador
 - `app/Models/ConteudoEstudo.php` - Subject (implementa SubjectInterface)
@@ -49,6 +55,7 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 - `app/Models/Meta.php` - Recebe notificações via MetaObserver
 
 ✅ **Funcionamento:**
+
 1. Quando um `ConteudoEstudo` muda para status **'CONCLUÍDO'**
 2. O método `notify()` é chamado automaticamente
 3. Todos os `MetaObserver` registrados são notificados
@@ -64,6 +71,7 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 ## 📁 Arquivos Criados/Modificados
 
 ### Novos Arquivos:
+
 - ✅ `app/Interfaces/SubjectInterface.php` - Interface Observer
 - ✅ `app/Interfaces/ObserverInterface.php` - Interface Observer
 - ✅ `app/Models/MetaObserver.php` - Implementação Observer
@@ -71,6 +79,7 @@ Todos os **3 Padrões GOF** solicitados foram implementados com sucesso no siste
 - ✅ `exemplo_padroes_gof.php` - Exemplo prático de uso
 
 ### Arquivos Modificados:
+
 - ✅ `app/Models/Database.php` - Implementação completa do Singleton
 - ✅ `app/Models/BaseModel.php` - Atualizado para usar Singleton
 - ✅ `app/Controllers/UsuarioController.php` - Documentação do Facade
@@ -106,17 +115,20 @@ Meta atualizada automaticamente! 🎉
 ## 💻 Como Testar
 
 ### 1. Ver a demonstração:
+
 ```bash
 php exemplo_padroes_gof.php
 ```
 
 ### 2. Ler a documentação:
+
 ```bash
 # Abra o arquivo README_GOF.md
 # Contém explicações detalhadas, diagramas e exemplos de código
 ```
 
 ### 3. Teste prático (descomente o código em `exemplo_padroes_gof.php`):
+
 ```php
 // Singleton
 $db = Database::getInstance();
@@ -166,11 +178,13 @@ Além dos padrões GOF, o código também segue os princípios SOLID:
 ## 🎉 Conclusão
 
 Os **três padrões GOF** foram implementados com sucesso:
+
 1. ✅ **Singleton** - Database com instância única
 2. ✅ **Facade** - UsuarioController simplificando autenticação
 3. ✅ **Observer** - ConteudoEstudo notificando Metas automaticamente
 
 O sistema está mais:
+
 - 🚀 **Eficiente** - Uma única conexão de banco
 - 🎯 **Organizado** - Complexidade escondida pela Facade
 - 🔔 **Reativo** - Atualizações automáticas via Observer
@@ -182,4 +196,4 @@ O sistema está mais:
 
 **Desenvolvido com 💙 aplicando os melhores padrões de projeto**
 
-*Para mais detalhes, consulte `README_GOF.md`*
+_Para mais detalhes, consulte `README_GOF.md`_

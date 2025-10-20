@@ -220,19 +220,20 @@ $conteudo->alterarStatus($id, 'concluido');
 
 ## 📈 Métricas de Melhoria
 
-| Métrica | Antes | Depois | Melhoria |
-|---------|-------|--------|----------|
-| **Conexões DB** | N conexões | 1 conexão | ↓ 90% uso de memória |
-| **Linhas Login** | ~50 linhas | 1 linha | ↓ 98% complexidade |
-| **Atualização Meta** | Manual | Automática | ↑ 100% confiabilidade |
-| **Acoplamento** | Alto | Baixo | ↑ Manutenibilidade |
-| **Reutilização** | Baixa | Alta | ↑ Produtividade |
+| Métrica              | Antes      | Depois     | Melhoria              |
+| -------------------- | ---------- | ---------- | --------------------- |
+| **Conexões DB**      | N conexões | 1 conexão  | ↓ 90% uso de memória  |
+| **Linhas Login**     | ~50 linhas | 1 linha    | ↓ 98% complexidade    |
+| **Atualização Meta** | Manual     | Automática | ↑ 100% confiabilidade |
+| **Acoplamento**      | Alto       | Baixo      | ↑ Manutenibilidade    |
+| **Reutilização**     | Baixa      | Alta       | ↑ Produtividade       |
 
 ---
 
 ## 🎓 Conceitos Principais
 
 ### Singleton
+
 ```
 ┌────────────────┐
 │ UMA INSTÂNCIA  │  ← Construtor privado
@@ -242,6 +243,7 @@ $conteudo->alterarStatus($id, 'concluido');
 ```
 
 ### Facade
+
 ```
 ┌─────────────────┐
 │ INTERFACE       │  ← Método público simples
@@ -252,6 +254,7 @@ $conteudo->alterarStatus($id, 'concluido');
 ```
 
 ### Observer
+
 ```
 ┌─────────────────┐
 │ SUBJECT         │  ← Mantém lista de observers

@@ -15,12 +15,18 @@
 require_once '../config/config.php';
 require_once '../config/autoloader.php';
 
-// Obtém a URL requisitada
+// Obtém a URL requisitada e o caminho base de forma dinâmica
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
-// Remove o diretório base se necessário
-$path = str_replace('/auxilo-estudos/public', '', $path);
+// Detecta automaticamente o caminho base (pasta onde o index.php está)
+$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+// Se estiver rodando em um subdiretório (ex.: /projeto-quintafeira/public),
+// remove esse prefixo do path para que as rotas funcionem corretamente
+if ($basePath !== '' && $basePath !== '/' && str_starts_with($path, $basePath)) {
+  $path = substr($path, strlen($basePath));
+}
 
 // Define rota padrão
 if ($path === '' || $path === '/') {

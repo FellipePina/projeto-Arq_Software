@@ -2,10 +2,10 @@
 
 /**
  * Exemplo de Uso dos Padrões GOF
- * 
+ *
  * Este arquivo demonstra como os três padrões GOF implementados
  * funcionam em conjunto no sistema.
- * 
+ *
  * ATENÇÃO: Este é um arquivo de exemplo/demonstração.
  * Não deve ser executado em produção.
  */
@@ -38,18 +38,18 @@ echo "✓ Segunda instância 'criada'\n";
 
 // Verifica se são a mesma instância
 if ($db1 === $db2) {
-    echo "✓ SUCESSO: Ambas são a MESMA instância! (Singleton funcionando)\n";
+  echo "✓ SUCESSO: Ambas são a MESMA instância! (Singleton funcionando)\n";
 } else {
-    echo "✗ ERRO: Instâncias diferentes (Singleton não funcionou)\n";
+  echo "✗ ERRO: Instâncias diferentes (Singleton não funcionou)\n";
 }
 
 // Tenta criar instância diretamente (vai falhar)
 echo "\nTentando criar instância com 'new Database()'...\n";
 try {
-    // $db3 = new Database(); // Descomente para ver o erro
-    echo "✗ Isso não deveria funcionar (construtor é privado)\n";
+  // $db3 = new Database(); // Descomente para ver o erro
+  echo "✗ Isso não deveria funcionar (construtor é privado)\n";
 } catch (Error $e) {
-    echo "✓ SUCESSO: Erro capturado - Construtor privado impede instanciação direta\n";
+  echo "✓ SUCESSO: Erro capturado - Construtor privado impede instanciação direta\n";
 }
 
 echo "\n";

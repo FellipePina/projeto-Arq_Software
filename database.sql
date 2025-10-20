@@ -247,7 +247,7 @@ DELIMITER ;
 
 -- Tabela de Usuários
 CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
@@ -258,11 +258,11 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Tabela de Categorias de Estudo
 CREATE TABLE IF NOT EXISTS categorias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     cor VARCHAR(7) DEFAULT '#FFFFFF',
-    usuario_id INT NOT NULL,
+    usuario_id BIGINT UNSIGNED NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
@@ -270,12 +270,12 @@ CREATE TABLE IF NOT EXISTS categorias (
 
 -- Tabela de Conteúdo de Estudo
 CREATE TABLE IF NOT EXISTS conteudos_estudo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descricao TEXT,
     status ENUM('pendente', 'em_andamento', 'concluido') NOT NULL DEFAULT 'pendente',
-    usuario_id INT NOT NULL,
-    categoria_id INT,
+    usuario_id BIGINT UNSIGNED NOT NULL,
+    categoria_id BIGINT UNSIGNED NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL,
@@ -284,22 +284,22 @@ CREATE TABLE IF NOT EXISTS conteudos_estudo (
 
 -- Tabela de Metas de Estudo
 CREATE TABLE IF NOT EXISTS metas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     data_alvo DATE NOT NULL,
     status ENUM('ativa', 'concluida', 'cancelada') NOT NULL DEFAULT 'ativa',
-    usuario_id INT NOT NULL,
+    usuario_id BIGINT UNSIGNED NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    percentual_progresso FLOAT DEFAULT 0,
+    percentual_progresso DECIMAL(5,2) DEFAULT 0.00,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 -- Tabela de Associação entre Metas e Conteúdos (N-M)
 CREATE TABLE IF NOT EXISTS metas_conteudos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    meta_id INT NOT NULL,
-    conteudo_id INT NOT NULL,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    meta_id BIGINT UNSIGNED NOT NULL,
+    conteudo_id BIGINT UNSIGNED NOT NULL,
     concluido BOOLEAN DEFAULT FALSE,
     data_conclusao DATETIME NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -311,9 +311,9 @@ CREATE TABLE IF NOT EXISTS metas_conteudos (
 
 -- Tabela de Sessões de Estudo
 CREATE TABLE IF NOT EXISTS sessoes_estudo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    conteudo_id INT,
-    usuario_id INT NOT NULL,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    conteudo_id BIGINT UNSIGNED NULL,
+    usuario_id BIGINT UNSIGNED NOT NULL,
     data_inicio DATETIME NOT NULL,
     data_fim DATETIME NULL,
     duracao_minutos INT DEFAULT 0,
@@ -326,9 +326,9 @@ CREATE TABLE IF NOT EXISTS sessoes_estudo (
 
 -- Tabela de Lembretes
 CREATE TABLE IF NOT EXISTS lembretes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    conteudo_id INT,
-    usuario_id INT NOT NULL,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    conteudo_id BIGINT UNSIGNED NULL,
+    usuario_id BIGINT UNSIGNED NOT NULL,
     data_hora DATETIME NOT NULL,
     mensagem TEXT NOT NULL,
     status ENUM('pendente', 'enviado') NOT NULL DEFAULT 'pendente',
