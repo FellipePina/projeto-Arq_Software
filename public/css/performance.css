@@ -1,0 +1,508 @@
+/**
+ * PERFORMANCE CSS - Otimizações para Hardware Fraco
+ * Sistema de Estudos - Versão Otimizada
+ *
+ * Principais otimizações:
+ * - Redução de backdrop-filter (muito pesado)
+ * - Simplificação de sombras
+ * - Animações com GPU acceleration
+ * - Modo performance com media query
+ * - Respeita prefers-reduced-motion
+ */
+
+/* ============================================
+   VARIÁVEIS DE PERFORMANCE
+   ============================================ */
+:root {
+  /* Modo normal */
+  --blur-strength: 20px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --transition-speed: 0.3s;
+  --animation-duration: 0.6s;
+
+  /* Performance adjustments */
+  --performance-mode: 0; /* 0 = off, 1 = on */
+}
+
+/* Modo Performance Ativado */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --blur-strength: 0px;
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.1s;
+    --animation-duration: 0.2s;
+  }
+}
+
+/* ============================================
+   OTIMIZAÇÕES GLOBAIS
+   ============================================ */
+
+/* Smooth scrolling - mas não em motion reduce */
+html {
+  scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Performance hints para o browser */
+.performance-layer {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ============================================
+   BACKDROP-FILTER OTIMIZADO
+   ============================================ */
+
+/* Versão leve do glassmorphism */
+.glass-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* backdrop-filter removido por padrão em performance mode */
+}
+
+/* Apenas adiciona blur se o hardware suportar */
+@supports (backdrop-filter: blur(10px)) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+    .glass-light {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  }
+}
+
+/* ============================================
+   SOMBRAS OTIMIZADAS
+   ============================================ */
+
+/* Sombras simples para melhor performance */
+.shadow-optimized {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-optimized-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Desabilita sombras complexas em motion reduce */
+@media (prefers-reduced-motion: reduce) {
+  .shadow-soft,
+  .shadow-medium,
+  .shadow-large {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* ============================================
+   ANIMAÇÕES OTIMIZADAS
+   ============================================ */
+
+/* Usa apenas transform e opacity para GPU acceleration */
+@keyframes fadeInOptimized {
+  from {
+    opacity: 0;
+    transform: translateY(10px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes scaleInOptimized {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+@keyframes slideInUpOptimized {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* Classes de animação otimizadas */
+.animate-fade-in-optimized {
+  animation: fadeInOptimized 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-scale-in-optimized {
+  animation: scaleInOptimized 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-slide-up-optimized {
+  animation: slideInUpOptimized 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Desabilita animações completamente em reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   TRANSIÇÕES OTIMIZADAS
+   ============================================ */
+
+/* Usa apenas propriedades que podem ser aceleradas por GPU */
+.transition-optimized {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  will-change: transform, opacity;
+}
+
+/* Remove will-change após animação */
+.transition-optimized:not(:hover):not(:focus) {
+  will-change: auto;
+}
+
+/* ============================================
+   CARDS E COMPONENTES OTIMIZADOS
+   ============================================ */
+
+.card-optimized {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-optimized:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Versão sem hover effects para performance */
+@media (prefers-reduced-motion: reduce) {
+  .card-optimized:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ============================================
+   GRADIENTES OTIMIZADOS
+   ============================================ */
+
+/* Background gradients são pesados, usar cores sólidas em performance mode */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-bg {
+    background: #667eea; /* Cor sólida */
+  }
+}
+
+/* ============================================
+   GRID E LAYOUT OTIMIZADO
+   ============================================ */
+
+/* CSS Grid com contain para melhor performance */
+.grid-optimized {
+  display: grid;
+  gap: 1.5rem;
+  contain: layout style;
+}
+
+/* ============================================
+   LAZY LOADING HELPERS
+   ============================================ */
+
+/* Placeholder para elementos lazy loaded */
+.lazy-placeholder {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Remove shimmer em reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .lazy-placeholder {
+    background: #f0f0f0;
+    animation: none;
+  }
+}
+
+/* ============================================
+   INTERSECTION OBSERVER HELPERS
+   ============================================ */
+
+/* Elementos fora da viewport não precisam renderizar efeitos */
+.off-viewport {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* ============================================
+   MODO PERFORMANCE MANUAL
+   ============================================ */
+
+/* Classe aplicada quando usuário ativa modo performance */
+body.performance-mode {
+  /* Remove todos os backdrop filters */
+  --blur-strength: 0px;
+}
+
+body.performance-mode .glass-light,
+body.performance-mode [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.performance-mode .shadow-soft,
+body.performance-mode .shadow-medium,
+body.performance-mode .shadow-large {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.performance-mode [class*="gradient"] {
+  background: var(--fallback-color, #667eea) !important;
+}
+
+body.performance-mode * {
+  animation-duration: 0.15s !important;
+  transition-duration: 0.15s !important;
+}
+
+/* ============================================
+   TIPOGRAFIA OTIMIZADA
+   ============================================ */
+
+/* Font rendering otimizado */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+/* Apenas usa optimizeLegibility em títulos */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   IMAGENS OTIMIZADAS
+   ============================================ */
+
+img {
+  /* Melhora performance de decode */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ============================================
+   SCROLLBAR PERFORMANCE
+   ============================================ */
+
+/* Scrollbar customizada leve */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  /* Remove animações e efeitos desnecessários */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* ============================================
+   UTILITIES DE PERFORMANCE
+   ============================================ */
+
+/* Força compositing layer para elementos animados */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Remove will-change quando não está em uso */
+.gpu-accelerated:not(.animating) {
+  will-change: auto;
+}
+
+/* Containment para melhor performance */
+.contain-strict {
+  contain: strict;
+}
+
+.contain-content {
+  contain: content;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+/* ============================================
+   LOADING STATES OTIMIZADOS
+   ============================================ */
+
+.skeleton-loader {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-loader {
+    background: #f0f0f0;
+    animation: none;
+  }
+}
+
+/* ============================================
+   DARK MODE PERFORMANCE
+   ============================================ */
+
+/* Dark mode sem animação de transição para melhor performance */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+
+  /* Apenas cores sólidas, sem gradientes */
+  body {
+    background: #1a1a1a;
+    color: #e5e5e5;
+  }
+
+  .card-optimized {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+}
+
+/* ============================================
+   MOBILE PERFORMANCE
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Reduz complexidade em mobile */
+  .glass-light {
+    backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  /* Animações mais rápidas */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Remove hover effects em touch devices */
+  .card-optimized:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   QUERIES DE DETECÇÃO DE HARDWARE
+   ============================================ */
+
+/* Reduz efeitos em conexões lentas */
+@media (prefers-reduced-data: reduce) {
+  .glass-light {
+    backdrop-filter: none !important;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   FPS MONITORING HELPER
+   ============================================ */
+
+/* Classe para debug de performance */
+.fps-monitor {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #0f0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}

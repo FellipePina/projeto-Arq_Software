@@ -1,37 +1,52 @@
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer mt-5" style="background-color: #2c3e50; color: white; padding: 2rem 0; text-align: center;">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <p>&copy; <?= date('Y') ?> Auxílio Estudos. Sistema de gerenciamento de estudos.</p>
-            <p class="text-muted">
-              Desenvolvido com <i class="fas fa-heart" style="color: #e74c3c;"></i>
-              usando PHP, MySQL e princípios SOLID & Clean Code
-            </p>
-          </div>
-        </div>
       </div>
-    </footer>
+      </main>
+      </div>
 
-    <!-- JavaScript -->
-    <script src="/js/main.js"></script>
-    </script>
+      <!-- Alpine.js para interatividade -->
+      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Scripts específicos da página -->
-    <?php if (isset($scripts)): ?>
-      <?php foreach ($scripts as $script): ?>
-        <script src="<?= $script ?>"></script>
-      <?php endforeach; ?>
-    <?php endif; ?>
+      <!-- Custom JavaScript Modules -->
+      <script src="/assets/js/ajax-helpers.js"></script>
+      <script src="/assets/js/chart-handler.js"></script>
+      <script src="/assets/js/pomodoro-timer.js"></script>
 
-    <!-- Script inline se necessário -->
-    <?php if (isset($inline_scripts)): ?>
+      <!-- Custom JavaScript -->
+      <script src="/js/main.js"></script>
+
       <script>
-        <?= $inline_scripts ?>
-      </script>
-    <?php endif; ?>
-    </body>
+        // Atualiza dados de gamificação no header
+        async function updateGamificationHeader() {
+          try {
+            const response = await fetch('/gamificacao/dados');
+            const data = await response.json();
 
-    </html>
+            if (data.success) {
+              document.getElementById('pontos-header').textContent = data.pontos_totais;
+              document.getElementById('nivel-header').textContent = data.nivel;
+              document.getElementById('streak-header').textContent = data.sequencia_dias;
+            }
+          } catch (error) {
+            console.error('Erro ao atualizar gamificação:', error);
+          }
+        }
+
+        // Atualiza ao carregar página
+        document.addEventListener('DOMContentLoaded', updateGamificationHeader);
+
+        // Menu mobile toggle
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+          document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Auto-hide flash messages
+        setTimeout(() => {
+          document.querySelectorAll('.flash-message').forEach(msg => {
+            msg.style.transition = 'opacity 0.5s';
+            msg.style.opacity = '0';
+            setTimeout(() => msg.remove(), 500);
+          });
+        }, 5000);
+      </script>
+      </body>
+
+      </html>

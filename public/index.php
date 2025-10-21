@@ -155,6 +155,253 @@ switch ($path) {
     $controller->marcarConteudoConcluido();
     break;
 
+  // === DISCIPLINAS ===
+  case '/disciplinas':
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->index();
+    break;
+
+  case '/disciplinas/criar':
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->create();
+    break;
+
+  case '/disciplinas/salvar':
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->store();
+    break;
+
+  case (preg_match('/^\/disciplinas\/(\d+)\/editar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->edit((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/disciplinas\/(\d+)\/atualizar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->update((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/disciplinas\/(\d+)\/arquivar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->archive((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/disciplinas\/(\d+)$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\DisciplinaController();
+    $controller->show((int)$matches[1]);
+    break;
+
+  // === TAREFAS ===
+  case '/tarefas':
+    $controller = new App\Controllers\TarefaController();
+    $controller->index();
+    break;
+
+  case '/tarefas/criar':
+    $controller = new App\Controllers\TarefaController();
+    $controller->create();
+    break;
+
+  case '/tarefas/salvar':
+    $controller = new App\Controllers\TarefaController();
+    $controller->store();
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->show((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/editar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->edit((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/atualizar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->update((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/completar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->complete((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/desmarcar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->uncomplete((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/subtarefa$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->addSubtask((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/tarefas\/(\d+)\/subtarefa\/(\d+)\/toggle$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\TarefaController();
+    $controller->toggleSubtask((int)$matches[1], (int)$matches[2]);
+    break;
+
+  // === POMODORO ===
+  case '/pomodoro':
+    $controller = new App\Controllers\PomodoroController();
+    $controller->index();
+    break;
+
+  case '/pomodoro/iniciar':
+    $controller = new App\Controllers\PomodoroController();
+    $controller->start();
+    break;
+
+  case (preg_match('/^\/pomodoro\/(\d+)\/finalizar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\PomodoroController();
+    $controller->finish((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/pomodoro\/(\d+)\/interromper$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\PomodoroController();
+    $controller->interrupt((int)$matches[1]);
+    break;
+
+  case '/pomodoro/historico':
+    $controller = new App\Controllers\PomodoroController();
+    $controller->history();
+    break;
+
+  case '/pomodoro/sessao-ativa':
+    $controller = new App\Controllers\PomodoroController();
+    $controller->activeSession();
+    break;
+
+  // === CALENDÁRIO ===
+  case '/calendario':
+    $controller = new App\Controllers\CalendarioController();
+    $controller->index();
+    break;
+
+  case '/calendario/eventos':
+    $controller = new App\Controllers\CalendarioController();
+    $controller->events();
+    break;
+
+  case '/calendario/criar':
+    $controller = new App\Controllers\CalendarioController();
+    $controller->store();
+    break;
+
+  case (preg_match('/^\/calendario\/(\d+)\/atualizar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\CalendarioController();
+    $controller->update((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/calendario\/(\d+)\/excluir$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\CalendarioController();
+    $controller->delete((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/calendario\/(\d+)\/mover$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\CalendarioController();
+    $controller->updateDate((int)$matches[1]);
+    break;
+
+  // === ANOTAÇÕES ===
+  case '/anotacoes':
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->index();
+    break;
+
+  case '/anotacoes/criar':
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->create();
+    break;
+
+  case '/anotacoes/salvar':
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->store();
+    break;
+
+  case (preg_match('/^\/anotacoes\/(\d+)$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->show((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/anotacoes\/(\d+)\/editar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->edit((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/anotacoes\/(\d+)\/atualizar$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->update((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/anotacoes\/(\d+)\/excluir$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->delete((int)$matches[1]);
+    break;
+
+  case (preg_match('/^\/anotacoes\/(\d+)\/favorita$/', $path, $matches) ? true : false):
+    $controller = new App\Controllers\AnotacaoController();
+    $controller->toggleFavorite((int)$matches[1]);
+    break;
+
+  // === RELATÓRIOS ===
+  case '/relatorios':
+    $controller = new App\Controllers\RelatorioController();
+    $controller->index();
+    break;
+
+  case '/relatorios/pomodoro-diario':
+    $controller = new App\Controllers\RelatorioController();
+    $controller->chartPomodoroDaily();
+    break;
+
+  case '/relatorios/disciplinas':
+    $controller = new App\Controllers\RelatorioController();
+    $controller->chartDisciplinas();
+    break;
+
+  case '/relatorios/tarefas':
+    $controller = new App\Controllers\RelatorioController();
+    $controller->chartTarefas();
+    break;
+
+  case '/relatorios/exportar':
+    $controller = new App\Controllers\RelatorioController();
+    $controller->exportCsv();
+    break;
+
+  // === CONFIGURAÇÕES ===
+  case '/configuracoes':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->index();
+    break;
+
+  case '/configuracoes/atualizar':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->update();
+    break;
+
+  case '/configuracoes/tema':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->toggleTheme();
+    break;
+
+  case '/gamificacao':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->gamificacao();
+    break;
+
+  case '/gamificacao/verificar':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->checkAchievements();
+    break;
+
+  case '/gamificacao/dados':
+    $controller = new App\Controllers\ConfiguracaoController();
+    $controller->gamificationData();
+    break;
+
   // === AJAX/API ===
   case '/dashboard/graficos':
     $controller = new App\Controllers\DashboardController();

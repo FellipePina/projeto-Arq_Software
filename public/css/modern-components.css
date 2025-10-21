@@ -1,0 +1,354 @@
+/*
+ * Modern Components CSS
+ * Design System: Elegant, Minimalist, Inspired by Notion, Linear, Vercel
+ */
+
+/* Utility Classes */
+.btn-modern {
+  @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.modern-card {
+  @apply bg-white rounded-xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-gray-100;
+}
+
+.badge-modern {
+  @apply inline-flex items-center px-2.5 py-1 rounded-md font-medium;
+}
+
+/* Form Elements - Modern Style */
+.modern-input {
+  @apply w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg
+         focus:ring-2 focus:ring-primary-500 focus:border-transparent
+         transition-all duration-200 placeholder-gray-400;
+}
+
+.modern-select {
+  @apply px-4 py-2.5 text-sm border border-gray-200 rounded-lg
+         focus:ring-2 focus:ring-primary-500 focus:border-transparent
+         transition-all duration-200 bg-white cursor-pointer;
+}
+
+.modern-textarea {
+  @apply w-full px-4 py-3 text-sm border border-gray-200 rounded-lg
+         focus:ring-2 focus:ring-primary-500 focus:border-transparent
+         transition-all duration-200 placeholder-gray-400 resize-none;
+}
+
+.modern-checkbox {
+  @apply w-4 h-4 text-primary-600 border-gray-300 rounded
+         focus:ring-2 focus:ring-primary-500 cursor-pointer;
+}
+
+.modern-radio {
+  @apply w-4 h-4 text-primary-600 border-gray-300
+         focus:ring-2 focus:ring-primary-500 cursor-pointer;
+}
+
+/* Color Picker - Modern Style */
+.color-picker-grid {
+  @apply grid grid-cols-8 gap-2 p-3 bg-gray-50 rounded-lg;
+}
+
+.color-option {
+  @apply w-8 h-8 rounded-lg cursor-pointer transition-all duration-200
+         hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2
+         focus:ring-primary-500 relative;
+}
+
+.color-option.selected::after {
+  content: "✓";
+  @apply absolute inset-0 flex items-center justify-center text-white font-bold text-sm;
+}
+
+/* Stats Card - Gradient Background */
+.stat-card {
+  @apply p-4 rounded-lg transition-all duration-300 hover:scale-105;
+}
+
+.stat-card-primary {
+  @apply bg-gradient-to-br from-primary-50 to-primary-100/50;
+}
+
+.stat-card-success {
+  @apply bg-gradient-to-br from-emerald-50 to-green-100/50;
+}
+
+.stat-card-warning {
+  @apply bg-gradient-to-br from-amber-50 to-yellow-100/50;
+}
+
+.stat-card-danger {
+  @apply bg-gradient-to-br from-red-50 to-rose-100/50;
+}
+
+.stat-card-info {
+  @apply bg-gradient-to-br from-blue-50 to-cyan-100/50;
+}
+
+/* Progress Bars - Modern Design */
+.modern-progress {
+  @apply h-2 bg-gray-100 rounded-full overflow-hidden;
+}
+
+.modern-progress-bar {
+  @apply h-full rounded-full transition-all duration-500;
+}
+
+.progress-success {
+  @apply bg-gradient-to-r from-emerald-500 to-green-600;
+}
+
+.progress-warning {
+  @apply bg-gradient-to-r from-amber-500 to-yellow-600;
+}
+
+.progress-danger {
+  @apply bg-gradient-to-r from-red-500 to-rose-600;
+}
+
+.progress-primary {
+  @apply bg-gradient-to-r from-primary-500 to-primary-700;
+}
+
+/* Tabs - Minimalist Design */
+.modern-tabs {
+  @apply flex gap-1 p-1 bg-gray-100 rounded-lg;
+}
+
+.modern-tab {
+  @apply px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
+         text-gray-600 hover:text-gray-900 cursor-pointer;
+}
+
+.modern-tab.active {
+  @apply bg-white text-gray-900 shadow-sm;
+}
+
+/* Toggle Switch - Modern Style */
+.modern-toggle {
+  @apply relative inline-block w-11 h-6;
+}
+
+.modern-toggle input {
+  @apply opacity-0 w-0 h-0;
+}
+
+.modern-toggle-slider {
+  @apply absolute cursor-pointer inset-0 bg-gray-200 rounded-full
+         transition-all duration-300;
+}
+
+.modern-toggle-slider:before {
+  content: "";
+  @apply absolute h-5 w-5 left-0.5 bottom-0.5 bg-white rounded-full
+         transition-all duration-300;
+}
+
+.modern-toggle input:checked + .modern-toggle-slider {
+  @apply bg-primary-600;
+}
+
+.modern-toggle input:checked + .modern-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Dropdown Menu - Glass Effect */
+.modern-dropdown {
+  @apply absolute right-0 mt-2 w-56 glass rounded-xl shadow-soft-lg py-2 z-50;
+}
+
+.modern-dropdown-item {
+  @apply flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700
+         hover:bg-gray-50 transition-colors cursor-pointer;
+}
+
+.modern-dropdown-divider {
+  @apply border-t border-gray-100 my-2;
+}
+
+/* Modal - Modern Overlay */
+.modern-modal-overlay {
+  @apply fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50
+         flex items-center justify-center p-4;
+}
+
+.modern-modal {
+  @apply bg-white rounded-2xl shadow-soft-lg max-w-lg w-full
+         max-h-[90vh] overflow-y-auto;
+}
+
+.modern-modal-header {
+  @apply flex items-center justify-between p-6 border-b border-gray-100;
+}
+
+.modern-modal-body {
+  @apply p-6;
+}
+
+.modern-modal-footer {
+  @apply flex items-center justify-end gap-3 p-6 border-t border-gray-100;
+}
+
+/* Toast Notifications - Gradient Backgrounds */
+.modern-toast {
+  @apply fixed top-20 right-6 z-50 flex items-center gap-3 px-4 py-3
+         rounded-xl border shadow-soft-lg animate-slide-in-up;
+}
+
+.toast-success {
+  @apply bg-gradient-to-r from-emerald-50 to-green-50 border-emerald-200 text-emerald-800;
+}
+
+.toast-error {
+  @apply bg-gradient-to-r from-red-50 to-rose-50 border-red-200 text-red-800;
+}
+
+.toast-warning {
+  @apply bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200 text-amber-800;
+}
+
+.toast-info {
+  @apply bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200 text-blue-800;
+}
+
+/* Skeleton Loaders - Modern Shimmer */
+.skeleton {
+  @apply bg-gray-200 rounded animate-pulse;
+}
+
+.skeleton-text {
+  @apply h-4 bg-gray-200 rounded;
+}
+
+.skeleton-circle {
+  @apply rounded-full bg-gray-200;
+}
+
+/* Empty States - Elegant Design */
+.modern-empty-state {
+  @apply text-center py-12 px-6;
+}
+
+.empty-state-icon-wrapper {
+  @apply w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br
+         from-primary-100 to-primary-200 flex items-center justify-center;
+}
+
+.empty-state-icon {
+  @apply text-4xl text-primary-600;
+}
+
+.empty-state-title {
+  @apply text-xl font-semibold text-gray-900 mb-2;
+}
+
+.empty-state-description {
+  @apply text-gray-600 mb-6 max-w-md mx-auto;
+}
+
+/* Avatar - Modern Style */
+.modern-avatar {
+  @apply rounded-full overflow-hidden flex items-center justify-center font-semibold;
+}
+
+.avatar-sm {
+  @apply w-8 h-8 text-xs;
+}
+
+.avatar-md {
+  @apply w-10 h-10 text-sm;
+}
+
+.avatar-lg {
+  @apply w-12 h-12 text-base;
+}
+
+.avatar-xl {
+  @apply w-16 h-16 text-lg;
+}
+
+/* Gradient Text - Multiple Colors */
+.gradient-text-primary {
+  @apply bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent;
+}
+
+.gradient-text-success {
+  @apply bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent;
+}
+
+.gradient-text-warning {
+  @apply bg-gradient-to-r from-amber-600 to-yellow-700 bg-clip-text text-transparent;
+}
+
+.gradient-text-danger {
+  @apply bg-gradient-to-r from-red-600 to-rose-700 bg-clip-text text-transparent;
+}
+
+/* Chip/Tag - Modern Pill Design */
+.modern-chip {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium;
+}
+
+.chip-primary {
+  @apply bg-primary-100 text-primary-700;
+}
+
+.chip-success {
+  @apply bg-emerald-100 text-emerald-700;
+}
+
+.chip-warning {
+  @apply bg-amber-100 text-amber-700;
+}
+
+.chip-danger {
+  @apply bg-red-100 text-red-700;
+}
+
+.chip-gray {
+  @apply bg-gray-100 text-gray-700;
+}
+
+/* Divider - Subtle Separation */
+.modern-divider {
+  @apply border-t border-gray-100 my-6;
+}
+
+.modern-divider-text {
+  @apply flex items-center text-xs text-gray-500 uppercase tracking-wider;
+}
+
+.modern-divider-text::before,
+.modern-divider-text::after {
+  content: "";
+  @apply flex-1 border-t border-gray-200;
+}
+
+.modern-divider-text::before {
+  @apply mr-3;
+}
+
+.modern-divider-text::after {
+  @apply ml-3;
+}
+
+/* Responsive Grid - Auto-fit Layout */
+.modern-grid {
+  @apply grid gap-6;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.hover-glow {
+  @apply transition-shadow duration-300 hover:shadow-soft-lg;
+}
+
+/* Focus Visible - Accessibility */
+.focus-modern {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
