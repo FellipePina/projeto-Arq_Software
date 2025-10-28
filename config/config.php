@@ -8,23 +8,31 @@
  * todas as configurações em um local único.
  */
 
-// Configurações do banco de dados
-define('DB_HOST', 'localhost');
-// Porta do banco de dados (altere para 3307 se mudar no XAMPP)
-define('DB_PORT', 3306);
-define('DB_NAME', 'auxilio_estudos');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Carrega as variáveis de ambiente do arquivo .env
+require_once __DIR__ . '/EnvLoader.php';
+
+use App\Config\EnvLoader;
+
+EnvLoader::load();
+
+// Configurações do banco de dados (usa .env ou valores padrão)
+define('DB_HOST', EnvLoader::get('DB_HOST', 'localhost'));
+define('DB_PORT', (int) EnvLoader::get('DB_PORT', 3306));
+define('DB_NAME', EnvLoader::get('DB_NAME', 'sistema_estudos'));
+define('DB_USER', EnvLoader::get('DB_USER', 'root'));
+define('DB_PASS', EnvLoader::get('DB_PASSWORD', ''));
 define('DB_CHARSET', 'utf8mb4');
 
 // Configurações da aplicação
-define('APP_NAME', 'Auxílio Estudos');
-define('APP_VERSION', '1.0.0');
-define('APP_URL', 'http://localhost');
+define('APP_NAME', 'Sistema de Gerenciamento de Estudos');
+define('APP_VERSION', '2.0.0');
+define('APP_URL', EnvLoader::get('APP_URL', 'http://localhost:8000'));
+define('APP_ENV', EnvLoader::get('APP_ENV', 'development'));
+define('APP_DEBUG', EnvLoader::get('APP_DEBUG', 'true') === 'true');
 
 // Configurações de sessão
-define('SESSION_NAME', 'auxilio_estudos_session');
-define('SESSION_LIFETIME', 3600); // 1 hora em segundos
+define('SESSION_NAME', EnvLoader::get('SESSION_NAME', 'sistema_estudos_session'));
+define('SESSION_LIFETIME', (int) EnvLoader::get('SESSION_LIFETIME', 7200)); // 2 horas padrão
 
 // Configurações de segurança
 define('BCRYPT_COST', 12); // Custo do hash de senha

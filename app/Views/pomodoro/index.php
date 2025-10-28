@@ -497,11 +497,18 @@ require_once __DIR__ . '/../layouts/header.php';
 
 <style>
   .focus-timer-type.active {
-    @apply bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-soft;
+    background: linear-gradient(to right, rgb(239, 68, 68), rgb(225, 29, 72));
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .focus-timer-type:not(.active) {
-    @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+    background-color: rgb(243, 244, 246);
+    color: rgb(55, 65, 81);
+  }
+
+  .focus-timer-type:not(.active):hover {
+    background-color: rgb(229, 231, 235);
   }
 </style>
 

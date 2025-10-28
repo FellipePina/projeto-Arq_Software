@@ -320,6 +320,7 @@
       background: #e2e8f0;
       outline: none;
       -webkit-appearance: none;
+      appearance: none;
     }
 
     .range-input::-webkit-slider-thumb {

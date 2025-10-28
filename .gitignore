@@ -1,0 +1,43 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+error_log
+
+# Cache e temporários
+cache/
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Uploads de usuários (ajuste conforme necessário)
+uploads/*
+!uploads/.gitkeep
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependências (se usar Composer no futuro)
+vendor/
+composer.lock
+
+# Node modules (se usar npm no futuro)
+node_modules/
+package-lock.json
+
+# Backups de banco de dados
+*.sql.backup
+backup_*.sql

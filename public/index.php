@@ -342,7 +342,7 @@ switch ($path) {
 
   case (preg_match('/^\/anotacoes\/(\d+)\/favorita$/', $path, $matches) ? true : false):
     $controller = new App\Controllers\AnotacaoController();
-    $controller->toggleFavorite((int)$matches[1]);
+    $controller->togglePin((int)$matches[1]);
     break;
 
   // === RELATÓRIOS ===
